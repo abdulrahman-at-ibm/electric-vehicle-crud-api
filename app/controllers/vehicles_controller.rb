@@ -13,6 +13,15 @@ class VehiclesController < ApplicationController
     end
   end
 
+  def destroy
+    vehicle = Vehicle.find(params[:id])
+
+    vehicle.destroy!
+
+    head :no_content
+  end
+
+
   private
     def vehicle_params
       params.require(:vehicle).permit(:make, :model, :year)
