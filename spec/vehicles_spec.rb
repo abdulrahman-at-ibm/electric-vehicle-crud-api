@@ -21,7 +21,7 @@ describe "Electric Vehicle API", type: :request do
       expect(JSON.parse(response.body)["model"]).to eq("i3")
     end
 
-    it "returns a vehicle query using make, model, and year" do
+    it "returns a vehicle in response to a query" do
       vehicle = FactoryBot.create(:vehicle, make: "BMW", model: "BMW iX3 Premier Edition", year: 2022)
 
       get "/api/v1/vehicles", params: { vehicle: { make: "BMW", model: "BMW iX3 Premier Edition", year: 2022}}
