@@ -2,7 +2,11 @@ module Api
   module V1
     class VehiclesController < ApplicationController
       def index
-        render json: Vehicle.all
+        vehicles = Vehicle.where(nil) # anonymous scope
+        vehicles = vehicles.filter_by_make(params[:make]) if params[:make].present?
+        vehicles = vehicles.filter_by_model(params[:model]) if params[:model].present?
+        vehicles = vehicles.filter_by_year(params[:year]) if params[:year].present?
+        render json: vehicles
       end
 
       def show

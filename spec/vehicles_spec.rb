@@ -4,10 +4,10 @@ describe "Electric Vehicle API", type: :request do
   describe "GET /vehicles" do
     before do
       FactoryBot.create(:vehicle, make: "BMW", model: "i3", year: 2020)
-      FactoryBot.create(:vehicle, make: "Mercedes-Benz", model: "A Class Hatchback", year: 2021)      
+      FactoryBot.create(:vehicle, make: "Mercedes-Benz", model: "A Class Hatchback", year: 2021)
     end
-    it "returns all vehicles" do
 
+    it "returns all vehicles" do
       get "/api/v1/vehicles"
 
       expect(response).to have_http_status(:success)
@@ -27,7 +27,7 @@ describe "Electric Vehicle API", type: :request do
   describe "POST /vehicles" do
     it "creates a new vehicle" do
       expect {
-        post "/api/v1/vehicles", params: { vehicle: { make: "Volkwagen", model: "e-Golf", year: 2022 } }
+        post "/api/v1/vehicles", params: { vehicle: { make: "Volkswagen", model: "e-Golf", year: 2022 } }
       }.to change { Vehicle.count }.from(0).to(1)
 
       expect(response).to have_http_status(:created)
