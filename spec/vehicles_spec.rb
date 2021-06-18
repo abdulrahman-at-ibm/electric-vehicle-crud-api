@@ -2,25 +2,32 @@ require "rails_helper"
 
 describe "Electric Vehicle API", type: :request do
   describe "GET /vehicles" do
-    before do
+    it "returns all vehicles" do
       FactoryBot.create(:vehicle, make: "BMW", model: "i3", year: 2020)
       FactoryBot.create(:vehicle, make: "Mercedes-Benz", model: "A Class Hatchback", year: 2021)
-    end
 
-    it "returns all vehicles" do
       get "/api/v1/vehicles"
 
       expect(response).to have_http_status(:success)
       expect(JSON.parse(response.body).size).to eq(2)
     end
 
-    it "returns a vehicle" do
+    it "returns a vehicle using :id" do
       vehicle = FactoryBot.create(:vehicle, make: "BMW", model: "i3", year: 2020)
 
       get "/api/v1/vehicles/#{vehicle.id}"
 
       expect(response).to have_http_status(:success)
       expect(JSON.parse(response.body)["model"]).to eq("i3")
+    end
+
+    it "returns a vehicle query using make, model, and year" do
+      vehicle = FactoryBot.create(:vehicle, make: "BMW", model: "BMW iX3 Premier Edition", year: 2022)
+
+      get "/api/v1/vehicles", params: { vehicle: { make: "BMW", model: "BMW iX3 Premier Edition", year: 2022}}
+
+      expect(response).to have_http_status(:success)
+      expect(JSON.parse(response.body).first["model"]).to eq("BMW iX3 Premier Edition")
     end
   end
 

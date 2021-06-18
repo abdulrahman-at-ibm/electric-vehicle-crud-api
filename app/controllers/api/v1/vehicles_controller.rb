@@ -3,10 +3,16 @@ module Api
     class VehiclesController < ApplicationController
       def index
         vehicles = Vehicle.where(nil) # anonymous scope
-        vehicles = vehicles.filter_by_make(params[:make]) if params[:make].present?
-        vehicles = vehicles.filter_by_model(params[:model]) if params[:model].present?
-        vehicles = vehicles.filter_by_year(params[:year]) if params[:year].present?
+        # Loops through the query parameters and searches for a vehicle
+        filtering_params(params).each do |key, value|
+          vehicles = vehicles.public_send("filter_by_#{key}", value) if value.present?
+        end
+
         render json: vehicles
+      end
+
+      def filtering_params(params)
+        params.slice(:make, :model, :year)
       end
 
       def show
